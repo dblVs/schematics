@@ -1,0 +1,10 @@
+{
+  "schematics": {
+    "component": {
+      "aliases": ["vvc"],
+      "factory": "./component",
+      "description": "Create an Angular component.",
+      "schema": "./component/schema.json"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { I<%= classify(name) %>Component } from './<%= dasherize(name) %>.component.interface';
+
+@Component({
+  selector: '<%= selector %>',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class <%= classify(name) %>ComponentMock implements I<%= classify(name) %>Component {
+
+}

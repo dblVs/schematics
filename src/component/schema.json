@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "DblvsComponent",
+  "title": "Dblvs Component Options",
+  "type": "object",
+  "description": "Creates a new, generic component definition in the given project.",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the component?"
+    }
+  },
+  "required": ["name"]
+}
