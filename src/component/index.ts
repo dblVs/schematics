@@ -1,44 +1,21 @@
 import { apply, applyTemplates, chain, mergeWith, move, Rule, strings, Tree, url } from '@angular-devkit/schematics';
-import { workspaces } from '@angular-devkit/core';
+import {
+  addDeclarationToNgModule
+} from '@schematics/angular/utility/add-declaration-to-ng-module'
+import { findModuleFromOptions } from '@schematics/angular/utility/find-module'
+import { getWorkspace } from '@schematics/angular/utility/workspace'
+import { parseName } from '@schematics/angular/utility/parse-name'
 
-export async function getWorkspace(tree: Tree, path = '/angular.json'): Promise<workspaces.WorkspaceDefinition> {
-  const host = new TreeWorkspaceHost(tree);
-
-  const { workspace } = await workspaces.readWorkspace(path, host);
-
-  return workspace;
+interface VVCOptions {
+  name: string;
+  path: string;
 }
 
-class TreeWorkspaceHost implements workspaces.WorkspaceHost {
-  constructor(private readonly tree: Tree) {}
-
-  async readFile(path: string): Promise<string> {
-    return this.tree.readText(path);
-  }
-
-  async writeFile(path: string, data: string): Promise<void> {
-    if (this.tree.exists(path)) {
-      this.tree.overwrite(path, data);
-    } else {
-      this.tree.create(path, data);
-    }
-  }
-
-  async isDirectory(path: string): Promise<boolean> {
-    // approximate a directory check
-    return !this.tree.exists(path) && this.tree.getDir(path).subfiles.length > 0;
-  }
-
-  async isFile(path: string): Promise<boolean> {
-    return this.tree.exists(path);
-  }
-}
-
-function buildSelector(options: { name: string }, projectPrefix: string) {
+function buildSelector(options: VVCOptions, projectPrefix: string) {
   return `${projectPrefix}-${strings.dasherize(options.name)}`;
 }
 
-export default function (options: { name: string }): Rule {
+export default function (options: VVCOptions): Rule {
   return async (tree: Tree) => {
     const workspace = await getWorkspace(tree),
       projects = Array.from(workspace.projects.entries());
@@ -51,7 +28,9 @@ export default function (options: { name: string }): Rule {
 
     const selector = buildSelector(options, project.prefix || '');
 
-    console.log(selector);
+    const parsedPath = parseName(options.path as string, options.name);
+    options.name = parsedPath.name;
+    options.path = parsedPath.path;
 
     const templateSource = apply(url('./files'), [
       applyTemplates({
@@ -59,9 +38,17 @@ export default function (options: { name: string }): Rule {
         ...options,
         selector,
       }),
-      move('./playground'),
+      move(parsedPath.path),
     ]);
 
-    return chain([mergeWith(templateSource)]);
+    return chain([
+      mergeWith(templateSource),
+      addDeclarationToNgModule({
+        type: 'component',
+        ...options,
+        module: findModuleFromOptions(tree, options),
+        skipImport: false
+      })
+    ]);
   };
 }

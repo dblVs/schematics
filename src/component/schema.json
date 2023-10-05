@@ -14,6 +14,15 @@
         "index": 0
       },
       "x-prompt": "What name would you like to use for the component?"
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "$default": {
+        "$source": "workingDirectory"
+      },
+      "description": "The path at which to create the component, relative to the workspace root.",
+      "visible": false
     }
   },
   "required": ["name"]
