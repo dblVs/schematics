@@ -8,7 +8,7 @@
   "keywords": [
     "schematics"
   ],
-  "author": "",
+  "author": "Veli Veli",
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
@@ -19,5 +19,13 @@
   },
   "devDependencies": {
     "@types/node": "^16.11.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dblVs/schematics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dblVs/schematics/issues"
+  },
+  "homepage": "https://github.com/dblVs/schematics#readme"
 }
