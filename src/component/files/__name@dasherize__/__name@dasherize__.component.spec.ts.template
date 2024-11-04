@@ -7,7 +7,7 @@ describe('<%= classify(name) %>Component', () => {
   let fixture: ComponentFixture<TestHostComponent>;
 
   @Component({
-    template: '<<%= selector %>></<%= selector %>>',
+    template: `<<%= selector %>></<%= selector %>>`,
   })
   class TestHostComponent {}
 
@@ -16,7 +16,7 @@ describe('<%= classify(name) %>Component', () => {
       declarations: [TestHostComponent, <%= classify(name) %>Component],
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(TestHostComponent);
     fixture.detectChanges();
   });
