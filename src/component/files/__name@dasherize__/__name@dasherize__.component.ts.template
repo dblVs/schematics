@@ -6,6 +6,8 @@ import { I<%= classify(name) %>Component } from './<%= dasherize(name) %>.compon
   templateUrl: './<%= dasherize(name) %>.component.html',
   styleUrls: ['./<%= dasherize(name) %>.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [],
 })
 export class <%= classify(name) %>Component implements I<%= classify(name) %>Component {
 
